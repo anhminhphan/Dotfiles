@@ -18,7 +18,7 @@ function M.setup(lang)
     return
   end
 
-  local overrides = {} 
+  local overrides = {}
 
   if utils.is_table(overrides) then
     if utils.has_value(overrides, lang) then
@@ -56,9 +56,7 @@ function M.setup(lang)
   end
 
   lspconfig[provider].setup(lang_server.setup)
-
 end
-
 
 return M
 

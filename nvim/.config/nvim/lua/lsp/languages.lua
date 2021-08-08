@@ -1,5 +1,5 @@
-local common_on_attach = require("lsp").common_on_attach
-local common_capabilities = requrie("lsp").common_capabilities()
+local common_on_attach = require("lsp.services").common_on_attach
+local common_capabilities = require("lsp.services").common_capabilities()
 
 language_servers = {
   c = {
@@ -15,19 +15,18 @@ language_servers = {
       provider = "clangd",
       setup = {
         cmd = {
-          DATA_PATH .. "/lspinstall/cpp/clangd/vin/clangd",
+          DATA_PATH .. "/lspinstall/cpp/clangd/bin/clangd",
           "--background-index",
-          "--header-insertion = never",
+          "--header-insertion=never",
           "--cross-file-rename",
           "--clang-tidy",
-          "--clang-tidy-checks=-*,clang-analyzer-*",
+          "--clang-tidy-checks=-*,llvm-*,clang-analyzer-*",
         },
         on_attach = common_on_attach,
         capabilities = common_capabilities,
       },
     },
   },
-
   cpp = {
     formatter = {
       exe = "clang_format",
@@ -44,10 +43,10 @@ language_servers = {
         cmd = {
           DATA_PATH .. "/lspinstall/cpp/clangd/bin/clangd",
           "--background-index",
-          "--header-insertion = never",
+          "--header-insertion=never",
           "--cross-file-rename",
           "--clang-tidy",
-          "--clang-tidy-checks=-*,clang-analyzer-*",
+          "--clang-tidy-checks=-*,llvm-*,clang-analyzer-*",
         },
         on_attach = common_on_attach,
         capabilities = common_capabilities,
@@ -89,13 +88,17 @@ language_servers = {
         settings = {
           Lua = {
             runtime = {
-              version = "LuaJUT",
+              -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+              version = "LuaJIT",
+              -- Setup your lua path
               path = vim.split(package.path, ";"),
             },
             diagnostics = {
-              globals = {"vim","nvim"},
+              -- Get the language server to recognize the `vim` global
+              globals = { "vim", "lvim" },
             },
             workspace = {
+              -- Make the server aware of Neovim runtime files
               library = {
                 [vim.fn.expand "$VIMRUNTIME/lua"] = true,
                 [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
@@ -108,7 +111,6 @@ language_servers = {
       },
     },
   },
-
 }
 
 

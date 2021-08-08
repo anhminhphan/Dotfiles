@@ -1,5 +1,25 @@
 local M = {}
 
+  local function lsp_highlight_document(client)
+    vim.api.nvim_exec(
+      [[
+      hi LspReferenceRead cterm=bold ctermbg=red guibg=#464646
+      hi LspReferenceText cterm=bold ctermbg=red guibg=#464646
+      hi LspReferenceWrite cterm=bold ctermbg=red guibg=#464646
+      augroup lsp_document_highlight
+        autocmd! * <buffer>
+        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+      augroup END
+      ]],
+        false
+    )
+  end
+
+  function M.lsp_highlight_document(client)
+    lsp_highlight_document(client)
+  end
+
   function M.preview_location(location, context, before_context)
     -- location may be LocationLink or Location (more useful for the former)
     context = context or 15
@@ -65,8 +85,13 @@ local M = {}
     end
   end
 
+  function M.common_on_attach(client, bufnr)
+    lsp_highlight_document(client)
+  end
+
 
   function M.no_formatter_on_attach(client, bufnr)
+    lsp_highlight_document(client)
     client.resolved_capabilities.document_formatting = false
   end
 

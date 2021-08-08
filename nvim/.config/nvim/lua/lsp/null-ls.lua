@@ -1,10 +1,10 @@
 local M = {}
 
-local null_ls = require("null-ls")
+local null_ls = require "null-ls"
+local utils = require "utilities"
 local sources = {}
-local utils = require("utilities")
 
-local local_executables = { "prettier", "prettierd", "prettier_d_slim", "eslint_d", "eslint", "clang_format"}
+local local_executables = { "prettier", "prettierd", "prettier_d_slim", "eslint_d", "eslint" }
 
 local find_local_exe = function(exe)
   vim.cmd "let root_dir = FindRootDirectory()"
@@ -33,6 +33,7 @@ local function setup_ls(exe, type)
   null_ls.register { sources = sources }
 end
 
+-- TODO: for linters and formatters with spaces and '-' replace with '_'
 local function setup(filetype, type)
   local executables = nil
   if type == "diagnostics" then
@@ -54,6 +55,7 @@ local function setup(filetype, type)
   end
 end
 
+-- TODO: return the formatter if one was registered, then turn off the builtin formatter
 function M.setup(filetype)
   setup(filetype, "formatting")
   setup(filetype, "diagnostics")
@@ -62,5 +64,3 @@ function M.setup(filetype)
 end
 
 return M
-
-

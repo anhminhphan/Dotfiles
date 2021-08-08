@@ -38,13 +38,13 @@ return require("packer").startup(function(use)
     end,
   }
   use {"tami5/sql.nvim"}
-  
 
   -- LSP, Syntax, Autocompletion & Linter ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
   use {
     "neovim/nvim-lspconfig",
     config = function()
-      require("lsp")
+      require("lsp").config()
+      require("lsp.languages")
     end,
   }
   use{
@@ -148,12 +148,13 @@ return require("packer").startup(function(use)
   }
 
   -- Colorizer ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  use {
+  --[[ use {
     "norcalli/nvim-colorizer.lua",
     config = function()
       require("colorizer").setup()
     end,
-  }
+  } ]]
+  -- *** DONT NEED ANYMORE. LSP DOC HIGHLIGHT ALR COVER THIS
 
   -- Movement ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   use {

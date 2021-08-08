@@ -1,6 +1,8 @@
-local gl = require('galaxyline')
--- get my theme in galaxyline repo
--- local colors = require('galaxyline.theme').default
+local status_ok, gl = pcall(require, "galaxyline")
+if not status_ok then
+  return 
+end
+
 local colors = {
     -- bg = '#2E2E2E',
     bg = '#292D38',
@@ -21,51 +23,6 @@ local colors = {
     error_red = '#F44747',
     info_yellow = '#FFCC66'
 }
-
--- galaxyline themes for Gruvbox and NVCode.
--- Uncomment and change 'colors_colorschemeName'
--- to 'colors' to enable.
-
--- Colors for Gruvbox
--- local colors_gruvbox = {
---     bg = '#32302F',
---     yellow = '#FABD2F',
---     dark_yellow = '#D79921',
---     cyan = '#689D6A',
---     green = '#608B4E',
---     light_green = '#B8BB26',
---     string_orange = '#D65D0E',
---     orange = '#FE8019',
---     purple = '#B16286',
---     magenta = '#D3869B',
---     grey = '#A89984',
---     blue = '#458588',
---     -- vivid_blue = '#4FC1FF',
---     light_blue = '#83A598',
---     red = '#FB4834',
---     error_red = '#CC241D',
---     info_yellow = '#D79921'
--- }
--- colors for NVCode theme (very minimal changes)
--- local colors_nvcode = {
---     bg = '#2E2E2E',
---     yellow = '#DCDCAA',
---     dark_yellow = '#D7BA7D',
---     cyan = '#4EC9B0',
---     green = '#608B4E',
---     light_green = '#B5CEA8',
---     string_orange = '#CE9178',
---     orange = '#FF8800',
---     purple = '#C586C0',
---     magenta = '#D16D9E',
---     grey = '#729CB3',
---     blue = '#569CD6',
---     vivid_blue = '#4FC1FF',
---     light_blue = '#9CDCFE',
---     red = '#D16969',
---     error_red = '#F44747',
---     info_yellow = '#FFCC66'
--- }
 
 local condition = require('galaxyline.condition')
 local gls = gl.section
@@ -98,12 +55,13 @@ table.insert(gls.left, {
                 t = colors.blue
             }
             vim.api.nvim_command('hi GalaxyViMode guifg=' .. mode_color[vim.fn.mode()])
-            return '▊ '
+            return " "
         end,
+        separator_highlight = { "NONE", colors.bg},
         highlight = {colors.red, colors.bg}
     }
 })
-print(vim.fn.getbufvar(0, 'ts'))
+
 vim.fn.getbufvar(0, 'ts')
 
 table.insert(gls.left, {
@@ -155,32 +113,79 @@ table.insert(gls.left, {
     }
 })
 
-table.insert(gls.right, {
-    DiagnosticError = {provider = 'DiagnosticError', icon = '  ', highlight = {colors.error_red, colors.bg}}
+table.insert(gls.left, {
+    Filler = {
+      provider = function()
+        return " "
+      end,
+      highlight = { colors.grey, colors.bg },
+    },
 })
-table.insert(gls.right, {DiagnosticWarn = {provider = 'DiagnosticWarn', icon = '  ', highlight = {colors.orange, colors.bg}}})
 
 table.insert(gls.right, {
-    DiagnosticHint = {provider = 'DiagnosticHint', icon = '  ', highlight = {colors.vivid_blue, colors.bg}}
+    DiagnosticError = {
+      provider = 'DiagnosticError',
+      icon = '  ',
+      highlight = {colors.error_red, colors.bg}}
 })
-
-table.insert(gls.right, {DiagnosticInfo = {provider = 'DiagnosticInfo', icon = '  ', highlight = {colors.info_yellow, colors.bg}}})
+table.insert(gls.right, {
+  DiagnosticWarn = {
+    provider = 'DiagnosticWarn',
+    icon = '  ',
+    highlight = {colors.orange, colors.bg}}
+})
 
 table.insert(gls.right, {
-    TreesitterIcon = {
-        provider = function()
-            if next(vim.treesitter.highlighter.active) ~= nil then return ' ' end
-            return ''
-        end,
-        separator = ' ',
-        separator_highlight = {'NONE', colors.bg},
-        highlight = {colors.green, colors.bg}
-    }
+    DiagnosticHint = {
+      provider = 'DiagnosticHint',
+      icon = '  ',
+      highlight = {colors.vivid_blue, colors.bg}}
 })
+
+table.insert(gls.right, {
+  DiagnosticInfo = {
+    provider = 'DiagnosticInfo',
+    icon = '  ',
+    highlight = {colors.info_yellow, colors.bg}}
+})
+
+table.insert(gls.right, {
+  TreesitterIcon = {
+    provider = function()
+      if next(vim.treesitter.highlighter.active) ~= nil then
+        return "  "
+      end
+      return ""
+    end,
+    separator = " ",
+    separator_highlight = { "NONE", colors.bg },
+    highlight = { colors.green, colors.bg },
+  },
+})
+
+local function get_attached_provider_name(msg)
+  msg = msg or "LSP Inactive"
+
+  local buf_ft = vim.bo.filetype
+  local buf_clients = vim.lsp.buf_get_clients()
+  if next(buf_clients) == nil then
+    return msg
+  end
+  local buf_client_names = {}
+  for _, client in pairs(buf_clients) do
+    if client.name == "null-ls" then
+      table.insert(buf_client_names, language_servers[buf_ft].linters[1])
+      table.insert(buf_client_names, language_servers[buf_ft].formatter.exe)
+    else
+      table.insert(buf_client_names, client.name)
+    end
+  end
+  return table.concat(buf_client_names, ", ")
+end
 
 table.insert(gls.right, {
     ShowLspClient = {
-        provider = 'GetLspClient',
+        provider = get_attached_provider_name,
         condition = function()
             local tbl = {['dashboard'] = true, [' '] = true}
             if tbl[vim.bo.filetype] then return false end
