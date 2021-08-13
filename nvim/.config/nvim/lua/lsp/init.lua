@@ -11,6 +11,7 @@ function M.config()
   require("lsp.keybinds").setup()
 end
 
+
 function M.setup(lang)
   local lang_server = language_servers[lang].lsp
   local provider = lang_server.provider
@@ -31,7 +32,6 @@ function M.setup(lang)
       return
     end
   end
-
   local sources = null_ls.setup(lang)
 
   for _, source in pairs(sources) do
@@ -57,7 +57,6 @@ function M.setup(lang)
 
   lspconfig[provider].setup(lang_server.setup)
 end
-
 return M
 
 

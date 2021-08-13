@@ -74,9 +74,6 @@ return require("packer").startup(function(use)
   }
   use {
     "jose-elias-alvarez/null-ls.nvim",
-    config = function()
-      require("lsp.null-ls")
-    end,
   }
 
   -- Telescope & Telescope Extensions ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
