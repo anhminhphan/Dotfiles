@@ -75,6 +75,9 @@ return require("packer").startup(function(use)
   use {
     "jose-elias-alvarez/null-ls.nvim",
   }
+  use {
+    "tamago324/nlsp-settings.nvim",
+  }
 
   -- Telescope & Telescope Extensions ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   use {
