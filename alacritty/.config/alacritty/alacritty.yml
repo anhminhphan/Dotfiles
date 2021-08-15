@@ -1,0 +1,141 @@
+colors:
+  primary:
+    background: "#14191e"
+    foreground: "#dbdbdb"
+
+  # normal:
+  #   black: "#14191e"
+  #   red: "#b43c29"
+  #   green: "#00c200"
+  #   yellow: "#c7c400"
+  #   blue: "#2743c7"
+  #   magenta: "#bf3fbd"
+  #   cyan: "#00c5c7"
+  #   white: "#c7c7c7"
+
+  # bright:
+  #   black: "#676767"
+  #   red: "#dc7974"
+  #   green: "#57e690"
+  #   yellow: "#ece100"
+  #   blue: "#a6aaf1"
+  #   magenta: "#e07de0"
+  #   cyan: "#5ffdff"
+  #   white: "#feffff"
+
+  # cursor:
+  #   text: "#000000"
+  #   cursor: "#feffff"
+
+  normal:
+    black: "#3B4252"
+    red: "#BF616A"
+    green: "#A3BE8C"
+    yellow: "#EBCB8B"
+    blue: "#81A1C1"
+    magenta: "#B48EAD"
+    cyan: "#88C0D0"
+    white: "#ABB2BF"
+
+  bright:
+    black: "#5C6370"
+    red: "#E06C76"
+    green: "#98C379"
+    yellow: "#D19A66"
+    blue: "#61AFEF"
+    magenta: "#C678DD"
+    cyan: "#65B6C2"
+    white: "#ECEFF4"
+
+  cursor:
+    text: "#000000"
+    cursor: "#feffff"
+
+#bright color bold text
+draw_bold_text_with_bright_colors: true 
+
+#Cursor Style
+cursor:
+  style:
+    shape: Block
+    blinking: never
+
+#Fonts
+font:
+  normal:
+    family: "FiraCode Nerd Font Mono"
+    style: Regular
+
+  bold:
+    family: "FiraCode Nerd Font Mono"
+    style: Bold
+
+  italic: 
+    family: "FiraCode Nerd Font Mono"
+    style: Italic
+
+  size: 13.0
+
+  ligatures: true
+
+  offset:
+    x: 0
+    y: 0
+  glypth_offset:
+    x: 0
+    y: 0
+
+  use_thin_strokes: true
+
+#Window
+window:
+  dimensions:
+    columns: 150
+    lines: 50
+
+  position:
+    x: 0
+    y: 0
+
+  padding:
+    x: 7
+    y: 7
+
+  decorations: buttonless 
+
+#Window Title
+title: Alacritty
+dynamic_title: false #allow applications to change window title
+
+#Scrolling
+history: 10000
+multiplier: 10
+
+#Selection
+semantic_escape_chars: ",‚îÇ`|:\"' ()[]{}<>\t"
+save_to_clipboard: true
+live_config_reload: true
+
+#Keybinds
+key_bindings:
+  - { key: K,              mods: Command, mode: ~Vi|~Search, chars: "\x0c"                 }
+  - { key: K,              mods: Command, mode: ~Vi|~Search, action: ClearHistory          }
+  - { key: Key0,           mods: Command,                    action: ResetFontSize         }
+  - { key: Equals,         mods: Command,                    action: IncreaseFontSize      }
+  - { key: Plus,           mods: Command,                    action: IncreaseFontSize      }
+  - { key: NumpadAdd,      mods: Command,                    action: IncreaseFontSize      }
+  - { key: Minus,          mods: Command,                    action: DecreaseFontSize      }
+  - { key: NumpadSubtract, mods: Command,                    action: DecreaseFontSize      }
+  - { key: V,              mods: Command,                    action: Paste                 }
+  - { key: C,              mods: Command,                    action: Copy                  }
+  - { key: C,              mods: Command, mode: Vi|~Search,  action: ClearSelection        }
+  - { key: H,              mods: Command,                    action: Hide                  }
+  - { key: H,              mods: Command|Alt,                action: HideOtherApplications }
+  - { key: M,              mods: Command,                    action: Minimize              }
+  - { key: Q,              mods: Command,                    action: Quit                  }
+  - { key: W,              mods: Command,                    action: Quit                  }
+  - { key: N,              mods: Command,                    action: SpawnNewInstance      }
+  - { key: F,              mods: Command|Control,            action: ToggleFullscreen      }
+  - { key: F,              mods: Command, mode: ~Search,     action: SearchForward         }
+  - { key: B,              mods: Command, mode: ~Search,     action: SearchBackward        }
+
